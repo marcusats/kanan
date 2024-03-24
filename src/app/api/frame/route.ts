@@ -4,10 +4,9 @@ import { getPost } from '@/utils/graph/creators';
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const searchParams = req.nextUrl.searchParams;
   const id: any = searchParams.get("id");
-  const post = await getPost(id);
+  const post:any = await getPost(id);
 
   
-
   return new NextResponse(post.content.adContent);
 }
 

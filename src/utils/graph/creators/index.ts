@@ -1,8 +1,8 @@
 import { GraphQLClient, gql } from 'graphql-request';
 
 
-// const GRAPHQL_ENDPOINT = `https://gateway-testnet-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_KEY}/subgraphs/id/9GKpp7H8dUJJb8oazZhcrswqgjHSfKRYCuP1Lc9XZw4A` || "http://localhost:4000";
-const GRAPHQL_ENDPOINT = "https://api.studio.thegraph.com/query/43248/kanan-subgraph/version/latest";
+const GRAPHQL_ENDPOINT = `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_KEY}/subgraphs/id/DHp1g38LR9rKJ5Sx4BCWYUWpNyUT3teBKa6HbbWNwugD` || "http://localhost:4000";
+
 async function isCreator(creatorId: string): Promise<boolean> {
   const query = gql`
   {
@@ -47,7 +47,7 @@ async function getPendingProposals(creatorId: string): Promise<any[]> {
       const response: any = await graphQLClient.request(queryPending);
 
       console.log("GraphQL query response (Pending):", response);
-      return response.adContents;
+      return response.adContents.reverse(); // Reverse the array to get the latest one on top
     } catch (error) {
       console.error("GraphQL query error (Pending):", error);
       return []; // Return an empty array if there's an error
@@ -75,13 +75,13 @@ async function getPost(creatorId: string): Promise<any[]> {
 
       console.log("GraphQL query response (Pending):", response);
 
-      // Parse the content of each adContent from JSON string to object
+      // Parse the content of each adContent from JSON string to object and reverse the array
       const parsedAdContents = response.adContents.map((adContent: { content: string; [key: string]: any }) => ({
         ...adContent,
         content: JSON.parse(adContent.content),
-    }));
+      })).reverse();
 
-      return parsedAdContents[0];
+      return parsedAdContents[0]; // Return the first element after reversing to get the latest one on top
     } catch (error) {
       console.error("GraphQL query error (Pending):", error);
       return []; // Return an empty array if there's an error
