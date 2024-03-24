@@ -75,16 +75,16 @@ async function getPost(creatorId: string): Promise<any[]> {
 
       console.log("GraphQL query response (Pending):", response);
 
-      // Parse the content of each adContent from JSON string to object and reverse the array
+
       const parsedAdContents = response.adContents.map((adContent: { content: string; [key: string]: any }) => ({
         ...adContent,
         content: JSON.parse(adContent.content),
       })).reverse();
 
-      return parsedAdContents[0]; // Return the first element after reversing to get the latest one on top
+      return parsedAdContents[0]; 
     } catch (error) {
       console.error("GraphQL query error (Pending):", error);
-      return []; // Return an empty array if there's an error
+      return []; 
     
     }
 }
